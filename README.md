@@ -1,7 +1,7 @@
 # react-activity-points-management-system
 Web Programming Elective Assignment
 
-##File Structure
+## File Structure
 activity-points-system/
 │
 ├── public/
