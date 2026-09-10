@@ -1,76 +1,53 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft, CalendarDays, Send } from "lucide-react";
 import Sidebar from "../components/Sidebar";
 
 function AddActivity() {
-
-  const student = JSON.parse(
-    localStorage.getItem("student")
-  );
-
   const navigate = useNavigate();
+  const student = JSON.parse(localStorage.getItem("student"));
 
-  const [formData, setFormData] = useState({
+  const [form, setForm] = useState({
     title: "",
     category: "Technical",
     date: "",
     description: "",
-    pointsClaimed: ""
+    claimedPoints: ""
   });
 
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
-
-    setFormData({
-      ...formData,
+    setForm({
+      ...form,
       [e.target.name]: e.target.value
     });
-
   };
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
 
     const newActivity = {
       id: Date.now(),
       uid: student.uid,
-      title: formData.title,
-      category: formData.category,
-      date: formData.date,
-      description: formData.description,
-      pointsClaimed: Number(
-        formData.pointsClaimed
-      ),
+      title: form.title,
+      category: form.category,
+      date: form.date,
+      description: form.description,
+      pointsClaimed: Number(form.claimedPoints),
       pointsApproved: 0,
       status: "Pending"
     };
 
-    const existingActivities =
-      JSON.parse(
-        localStorage.getItem("newActivities")
-      ) || [];
+    const existing =
+      JSON.parse(localStorage.getItem("newActivities")) || [];
 
     localStorage.setItem(
       "newActivities",
-      JSON.stringify([
-        ...existingActivities,
-        newActivity
-      ])
+      JSON.stringify([...existing, newActivity])
     );
 
-    setMessage(
-      "Activity submitted successfully!"
-    );
-
-    setFormData({
-      title: "",
-      category: "Technical",
-      date: "",
-      description: "",
-      pointsClaimed: ""
-    });
+    setMessage("Activity submitted successfully.");
 
     setTimeout(() => {
       navigate("/activities");
@@ -79,96 +56,179 @@ function AddActivity() {
 
   return (
     <div className="app">
-
       <Sidebar />
 
       <main className="main-content">
-
-        <h1>Add Activity</h1>
-
-        <p className="subtitle">
-          Submit a new activity for approval.
-        </p>
-
-        <form
-          className="activity-form"
-          onSubmit={handleSubmit}
-        >
-
-          <label>Activity Title</label>
-
-          <input
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="Enter activity title"
-            required
-          />
-
-          <label>Category</label>
-
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-          >
-
-            <option>Technical</option>
-            <option>Professional</option>
-            <option>Sports</option>
-            <option>Cultural</option>
-            <option>Social Service</option>
-            <option>Entrepreneurship</option>
-            <option>Leadership</option>
-
-          </select>
-
-          <label>Date</label>
-
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Description</label>
-
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Describe your activity"
-            rows="5"
-            required
-          />
-
-          <label>Points Claimed</label>
-
-          <input
-            type="number"
-            name="pointsClaimed"
-            value={formData.pointsClaimed}
-            onChange={handleChange}
-            min="1"
-            required
-          />
-
-          <button type="submit">
-            Submit Activity
-          </button>
-
-          {message && (
-            <p className="success">
-              {message}
+        <div className="page-header">
+          <div>
+            <p className="eyebrow">ACTIVITY POINTS</p>
+            <h1>Add Activity</h1>
+            <p className="subtitle">
+              Submit a new activity for approval and points.
             </p>
-          )}
+          </div>
 
-        </form>
+          <button
+            className="back-button"
+            onClick={() => navigate("/activities")}
+          >
+            <ArrowLeft size={15} />
+            Back to Activities
+          </button>
+        </div>
 
+        <div className="add-activity-layout">
+
+          <section className="form-card">
+            <div className="form-card-header">
+              <div>
+                <h2>Activity Details</h2>
+                <p>Enter the details of the activity you completed.</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+
+              <div className="form-group">
+                <label>Activity Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="e.g. AI Workshop"
+                  value={form.title}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-row">
+
+                <div className="form-group">
+                  <label>Category</label>
+                  <select
+                    name="category"
+                    value={form.category}
+                    onChange={handleChange}
+                  >
+                    <option>Technical</option>
+                    <option>Professional</option>
+                    <option>Sports</option>
+                    <option>Cultural</option>
+                    <option>Social Service</option>
+                    <option>Entrepreneurship</option>
+                    <option>Leadership</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>Date</label>
+
+                  <div className="input-with-icon">
+                    <CalendarDays size={15} />
+                    <input
+                      type="date"
+                      name="date"
+                      value={form.date}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+              </div>
+
+              <div className="form-group">
+                <label>Description</label>
+                <textarea
+                  name="description"
+                  placeholder="Briefly describe the activity..."
+                  value={form.description}
+                  onChange={handleChange}
+                  rows="5"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Points Claimed</label>
+                <input
+                  type="number"
+                  name="claimedPoints"
+                  placeholder="Enter points"
+                  min="1"
+                  value={form.claimedPoints}
+                  onChange={handleChange}
+                  required
+                />
+                <small>
+                  Points will be reviewed before approval.
+                </small>
+              </div>
+
+              {message && (
+                <div className="success-message">
+                  {message}
+                </div>
+              )}
+
+              <div className="form-actions">
+                <button
+                  type="button"
+                  className="cancel-button"
+                  onClick={() => navigate("/activities")}
+                >
+                  Cancel
+                </button>
+
+                <button type="submit" className="submit-button">
+                  <Send size={15} />
+                  Submit Activity
+                </button>
+              </div>
+
+            </form>
+          </section>
+
+          <aside className="submission-info">
+            <div className="info-card">
+              <h3>Submission Process</h3>
+
+              <div className="process-step">
+                <span>01</span>
+                <div>
+                  <strong>Submit</strong>
+                  <p>Add the activity details and claimed points.</p>
+                </div>
+              </div>
+
+              <div className="process-step">
+                <span>02</span>
+                <div>
+                  <strong>Review</strong>
+                  <p>Your activity will be marked as pending.</p>
+                </div>
+              </div>
+
+              <div className="process-step">
+                <span>03</span>
+                <div>
+                  <strong>Approval</strong>
+                  <p>Approved points will be added to your total.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="info-note">
+              <strong>Keep your details accurate</strong>
+              <p>
+                Make sure the activity title, date and claimed points
+                match the supporting evidence.
+              </p>
+            </div>
+          </aside>
+
+        </div>
       </main>
-
     </div>
   );
 }

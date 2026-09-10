@@ -949,3 +949,284 @@ textarea {
   font-size: 24px;
   font-weight: 700;
 }
+
+/* ADD ACTIVITY PAGE */
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid #e1e2e8;
+  background: white;
+  color: #555a6b;
+  padding: 9px 13px;
+  border-radius: 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background: #f1f2f5;
+  color: #171923;
+}
+
+.add-activity-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 20px;
+  align-items: start;
+}
+
+.form-card {
+  background: white;
+  border: 1px solid #e7e8ed;
+  border-radius: 14px;
+  padding: 28px;
+}
+
+.form-card-header {
+  padding-bottom: 20px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid #eeeeF2;
+}
+
+.form-card-header h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.form-card-header p {
+  margin: 5px 0 0;
+  color: #9296a4;
+  font-size: 11px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 19px;
+}
+
+.form-group label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #353846;
+  margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  border: 1px solid #dfe1e7;
+  border-radius: 8px;
+  background: white;
+  color: #171923;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input,
+.form-group select {
+  height: 42px;
+  padding: 0 12px;
+}
+
+.form-group textarea {
+  padding: 11px 12px;
+  resize: vertical;
+  min-height: 110px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #171923;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #a5a8b3;
+}
+
+.form-group small {
+  margin-top: 6px;
+  color: #999daa;
+  font-size: 9px;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon svg {
+  position: absolute;
+  left: 12px;
+  top: 13px;
+  color: #858a9b;
+  pointer-events: none;
+}
+
+.input-with-icon input {
+  padding-left: 36px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  padding-top: 8px;
+  border-top: 1px solid #eeeeF2;
+}
+
+.cancel-button,
+.submit-button {
+  height: 39px;
+  border-radius: 8px;
+  padding: 0 15px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.cancel-button {
+  border: 1px solid #dfe1e7;
+  background: white;
+  color: #555a6b;
+}
+
+.cancel-button:hover {
+  background: #f5f6f8;
+}
+
+.submit-button {
+  border: none;
+  background: #171923;
+  color: white;
+}
+
+.submit-button:hover {
+  background: #292c38;
+}
+
+.success-message {
+  background: #edf5ef;
+  color: #477052;
+  border-radius: 7px;
+  padding: 9px 11px;
+  font-size: 10px;
+  margin-bottom: 14px;
+}
+
+/* SIDE INFORMATION */
+
+.submission-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.info-card {
+  background: white;
+  border: 1px solid #e7e8ed;
+  border-radius: 14px;
+  padding: 22px;
+}
+
+.info-card h3 {
+  margin: 0 0 20px;
+  font-size: 14px;
+}
+
+.process-step {
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #eeeeF2;
+}
+
+.process-step:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.process-step span {
+  font-size: 10px;
+  font-weight: 700;
+  color: #9296a4;
+  padding-top: 2px;
+}
+
+.process-step strong {
+  display: block;
+  font-size: 11px;
+}
+
+.process-step p {
+  margin: 4px 0 0;
+  color: #9296a4;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.info-note {
+  background: #171923;
+  color: white;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.info-note strong {
+  font-size: 12px;
+}
+
+.info-note p {
+  color: #aaaebb;
+  font-size: 10px;
+  line-height: 1.6;
+  margin: 8px 0 0;
+}
+
+/* ADD ACTIVITY RESPONSIVE */
+
+@media (max-width: 900px) {
+  .add-activity-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .submission-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    gap: 15px;
+    flex-direction: column;
+  }
+
+  .submission-info {
+    grid-template-columns: 1fr;
+  }
+
+  .form-card {
+    padding: 20px;
+  }
+}
