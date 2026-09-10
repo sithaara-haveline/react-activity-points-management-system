@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "uid": "abc",
+    "title": "AI Workshop",
+    "category": "Technical",
+    "date": "2026-08-10",
+    "description": "Participated in a hands-on artificial intelligence workshop.",
+    "pointsClaimed": 10,
+    "pointsApproved": 10,
+    "status": "Approved"
+  },
+  {
+    "id": 2,
+    "uid": "abc",
+    "title": "Inter College Debate",
+    "category": "Cultural",
+    "date": "2026-08-15",
+    "description": "Participated in an inter-college debate competition.",
+    "pointsClaimed": 8,
+    "pointsApproved": 8,
+    "status": "Approved"
+  },
+  {
+    "id": 3,
+    "uid": "abc",
+    "title": "Blood Donation Camp",
+    "category": "Social Service",
+    "date": "2026-08-20",
+    "description": "Volunteered for a blood donation awareness and collection camp.",
+    "pointsClaimed": 10,
+    "pointsApproved": 10,
+    "status": "Approved"
+  },
+  {
+    "id": 4,
+    "uid": "abc",
+    "title": "Web Development Workshop",
+    "category": "Technical",
+    "date": "2026-08-25",
+    "description": "Completed a workshop on modern web development.",
+    "pointsClaimed": 12,
+    "pointsApproved": 12,
+    "status": "Approved"
+  },
+  {
+    "id": 5,
+    "uid": "abc",
+    "title": "College Sports Meet",
+    "category": "Sports",
+    "date": "2026-08-28",
+    "description": "Participated in the annual college sports meet.",
+    "pointsClaimed": 8,
+    "pointsApproved": 6,
+    "status": "Partially Approved"
+  },
+  {
+    "id": 6,
+    "uid": "abc",
+    "title": "Leadership Training",
+    "category": "Leadership",
+    "date": "2026-09-01",
+    "description": "Completed a student leadership development programme.",
+    "pointsClaimed": 10,
+    "pointsApproved": 10,
+    "status": "Approved"
+  }
+]

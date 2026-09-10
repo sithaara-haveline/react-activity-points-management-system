@@ -1,0 +1,22 @@
+[
+  {
+    "uid": "abc",
+    "password": "123",
+    "name": "Ananya Thomas",
+    "department": "AI & Data Science",
+    "semester": 5,
+    "email": "ananya@example.com",
+    "phone": "+91 9876543210",
+    "targetPoints": 100
+  },
+  {
+    "uid": "RSET002",
+    "password": "student456",
+    "name": "Rahul Menon",
+    "department": "Computer Science",
+    "semester": 5,
+    "email": "rahul@example.com",
+    "phone": "+91 9876543211",
+    "targetPoints": 100
+  }
+]

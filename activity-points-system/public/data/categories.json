@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Technical",
+    "description": "Workshops, hackathons, technical competitions and certifications"
+  },
+  {
+    "name": "Professional",
+    "description": "Internships, seminars, conferences and professional development"
+  },
+  {
+    "name": "Sports",
+    "description": "Sports competitions, fitness activities and athletic events"
+  },
+  {
+    "name": "Cultural",
+    "description": "Arts, music, dance, literature and cultural events"
+  },
+  {
+    "name": "Social Service",
+    "description": "Community service, volunteering and social initiatives"
+  },
+  {
+    "name": "Entrepreneurship",
+    "description": "Startup activities, business competitions and innovation"
+  },
+  {
+    "name": "Leadership",
+    "description": "Student leadership, club activities and organisational roles"
+  }
+]
