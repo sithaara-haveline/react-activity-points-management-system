@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  ArrowRight,
+  CalendarDays,
+  CheckCircle2,
+  Clock3,
+  Target
+} from "lucide-react";
 import Sidebar from "../components/Sidebar";
 
 function Dashboard() {
@@ -12,136 +19,619 @@ function Dashboard() {
 
   useEffect(() => {
 
-    fetch("/data/activities.json")
-      .then((response) => response.json())
-      .then((data) => {
+    if (!student) return;
 
-        const studentActivities = data.filter(
-          (activity) => activity.uid === student.uid
-        );
+    const loadActivities = async () => {
 
-        setActivities(studentActivities);
+      const response = await fetch(
+        "/data/activities.json"
+      );
 
-      });
+      const data = await response.json();
 
-  }, [student.uid]);
+      const storedActivities =
+        JSON.parse(
+          localStorage.getItem("newActivities")
+        ) || [];
+
+      const studentActivities = [
+        ...data.filter(
+          (activity) =>
+            activity.uid === student.uid
+        ),
+
+        ...storedActivities.filter(
+          (activity) =>
+            activity.uid === student.uid
+        )
+      ];
+
+      setActivities(studentActivities);
+
+    };
+
+    loadActivities();
+
+  }, [student?.uid]);
+
+
+  /* POINT CALCULATIONS */
 
   const totalPoints = activities.reduce(
     (total, activity) =>
-      total + activity.pointsApproved,
+      total + Number(activity.pointsApproved || 0),
     0
   );
 
+  const claimedPoints = activities.reduce(
+    (total, activity) =>
+      total + Number(activity.pointsClaimed || 0),
+    0
+  );
+
+  const pendingActivities =
+    activities.filter(
+      (activity) =>
+        activity.status === "Pending"
+    ).length;
+
   const remainingPoints = Math.max(
-    student.targetPoints - totalPoints,
+    Number(student?.targetPoints || 0) -
+      totalPoints,
     0
   );
 
   const progress =
-    (totalPoints / student.targetPoints) * 100;
+    student?.targetPoints
+      ? Math.min(
+          (totalPoints /
+            student.targetPoints) *
+            100,
+          100
+        )
+      : 0;
+
+
+  /* CATEGORY TOTALS */
+
+  const categoryPoints = {};
+
+  activities.forEach((activity) => {
+
+    const category =
+      activity.category;
+
+    categoryPoints[category] =
+      (categoryPoints[category] || 0) +
+      Number(activity.pointsApproved || 0);
+
+  });
+
+
+  /* RECENT ACTIVITIES */
+
+  const recentActivities =
+    [...activities]
+      .sort(
+        (a, b) =>
+          new Date(b.date) -
+          new Date(a.date)
+      )
+      .slice(0, 4);
+
 
   return (
+
     <div className="app">
 
       <Sidebar />
 
       <main className="main-content">
 
-        <h1>Welcome, {student.name}</h1>
+        {/* HEADER */}
 
-        <p className="subtitle">
-          Here's an overview of your activity points.
-        </p>
+        <header className="topbar">
 
-        <div className="stats">
+          <div>
+
+            <p className="eyebrow">
+              STUDENT DASHBOARD
+            </p>
+
+            <h1>
+              Welcome,{" "}
+              {student?.name?.split(" ")[0]}
+            </h1>
+
+            <p className="welcome-text">
+              Here's an overview of your
+              activity points.
+            </p>
+
+          </div>
+
+          <div className="topbar-profile">
+
+            <div className="avatar">
+              {student?.name
+                ?.split(" ")
+                .map(
+                  (word) => word[0]
+                )
+                .join("")
+                .slice(0, 2)
+                .toUpperCase()}
+            </div>
+
+          </div>
+
+        </header>
+
+
+        {/* STAT CARDS */}
+
+        <section className="stats-grid">
+
+          <div className="stat-card primary">
+
+            <div className="stat-top">
+
+              <span>
+                Total Points
+              </span>
+
+              <div className="stat-icon">
+                <CheckCircle2 size={16} />
+              </div>
+
+            </div>
+
+            <h2>
+              {totalPoints}
+            </h2>
+
+            <p>
+              Points approved so far
+            </p>
+
+          </div>
+
 
           <div className="stat-card">
-            <h3>Total Points</h3>
-            <h2>{totalPoints}</h2>
+
+            <div className="stat-top">
+
+              <span>
+                Target Points
+              </span>
+
+              <div className="stat-icon">
+                <Target size={16} />
+              </div>
+
+            </div>
+
+            <h2>
+              {student?.targetPoints || 0}
+            </h2>
+
+            <p>
+              Required activity points
+            </p>
+
           </div>
+
 
           <div className="stat-card">
-            <h3>Target Points</h3>
-            <h2>{student.targetPoints}</h2>
+
+            <div className="stat-top">
+
+              <span>
+                Remaining
+              </span>
+
+              <div className="stat-icon">
+                <ArrowRight size={16} />
+              </div>
+
+            </div>
+
+            <h2>
+              {remainingPoints}
+            </h2>
+
+            <p>
+              Points needed to reach target
+            </p>
+
           </div>
+
 
           <div className="stat-card">
-            <h3>Remaining</h3>
-            <h2>{remainingPoints}</h2>
-          </div>
 
-          <div className="stat-card">
-            <h3>Activities</h3>
-            <h2>{activities.length}</h2>
-          </div>
+            <div className="stat-top">
 
-        </div>
+              <span>
+                Activities
+              </span>
 
-        <div className="progress-section">
+              <div className="stat-icon">
+                <CalendarDays size={16} />
+              </div>
 
-          <div className="progress-header">
-            <span>Overall Progress</span>
-            <span>
-              {Math.min(progress, 100).toFixed(0)}%
-            </span>
-          </div>
+            </div>
 
-          <div className="progress-bar">
+            <h2>
+              {activities.length}
+            </h2>
 
-            <div
-              className="progress-fill"
-              style={{
-                width: `${Math.min(progress, 100)}%`
-              }}
-            />
+            <p>
+              Total activities submitted
+            </p>
 
           </div>
 
-        </div>
+        </section>
 
-        <div className="recent">
 
-          <div className="section-header">
+        {/* MAIN DASHBOARD AREA */}
 
-            <h2>Recent Activities</h2>
+        <section className="dashboard-grid">
 
-            <Link to="/activities">
-              View All
-            </Link>
 
-          </div>
+          {/* PROGRESS */}
 
-          {activities.slice(-4).reverse().map(
-            (activity) => (
+          <div className="progress-card">
+
+            <div className="section-title">
+
+              <div>
+
+                <h3>
+                  Points Progress
+                </h3>
+
+                <p>
+                  Your progress towards the
+                  target
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div className="progress-content">
 
               <div
-                className="activity-row"
-                key={activity.id}
+                className="progress-ring"
+                style={{
+                  background:
+                    `conic-gradient(
+                      #171923 ${progress}%,
+                      #ececf1 ${progress}%
+                    )`
+                }}
               >
 
-                <div>
+                <div className="ring-inner">
+
                   <strong>
-                    {activity.title}
+                    {progress.toFixed(0)}%
                   </strong>
 
                   <span>
-                    {activity.category}
+                    completed
                   </span>
-                </div>
 
-                <div>
-                  <strong>
-                    +{activity.pointsApproved}
-                  </strong>
-                  <span>points</span>
                 </div>
 
               </div>
 
-            )
-          )}
 
-        </div>
+              <div className="progress-info">
+
+                <div className="progress-number">
+
+                  <strong>
+                    {totalPoints}
+                  </strong>
+
+                  <span>
+                    / {student?.targetPoints || 0}
+                    {" "}points
+                  </span>
+
+                </div>
+
+
+                <div className="linear-progress">
+
+                  <div
+                    style={{
+                      width:
+                        `${progress}%`
+                    }}
+                  />
+
+                </div>
+
+
+                <p>
+
+                  {remainingPoints === 0
+                    ? "You've reached your activity points target."
+                    : `${remainingPoints} more points needed to reach your target.`}
+
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* QUICK SUMMARY */}
+
+          <div className="recent-card">
+
+            <div className="section-title">
+
+              <div>
+
+                <h3>
+                  Activity Summary
+                </h3>
+
+                <p>
+                  Current submission status
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div className="summary-list">
+
+              <div className="summary-row">
+
+                <div className="summary-label">
+
+                  <CheckCircle2 size={16} />
+
+                  <span>
+                    Approved
+                  </span>
+
+                </div>
+
+                <strong>
+                  {
+                    activities.filter(
+                      (activity) =>
+                        activity.status ===
+                        "Approved"
+                    ).length
+                  }
+                </strong>
+
+              </div>
+
+
+              <div className="summary-row">
+
+                <div className="summary-label">
+
+                  <Clock3 size={16} />
+
+                  <span>
+                    Pending
+                  </span>
+
+                </div>
+
+                <strong>
+                  {pendingActivities}
+                </strong>
+
+              </div>
+
+
+              <div className="summary-row">
+
+                <div className="summary-label">
+
+                  <Target size={16} />
+
+                  <span>
+                    Points Claimed
+                  </span>
+
+                </div>
+
+                <strong>
+                  {claimedPoints}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <Link
+              to="/activities"
+              className="dashboard-link"
+            >
+              View all activities
+              <ArrowRight size={14} />
+            </Link>
+
+          </div>
+
+        </section>
+
+
+        {/* RECENT ACTIVITIES */}
+
+        <section className="recent-card dashboard-recent">
+
+          <div className="section-title">
+
+            <div>
+
+              <h3>
+                Recent Activities
+              </h3>
+
+              <p>
+                Your latest submissions
+              </p>
+
+            </div>
+
+            <Link
+              to="/activities"
+              className="text-button"
+            >
+              View all
+            </Link>
+
+          </div>
+
+
+          <div className="dashboard-activity-list">
+
+            {recentActivities.length > 0 ? (
+
+              recentActivities.map(
+                (activity) => (
+
+                  <div
+                    className="activity-item"
+                    key={activity.id}
+                  >
+
+                    <div className="activity-icon">
+                      <CalendarDays size={16} />
+                    </div>
+
+                    <div className="activity-info">
+
+                      <strong>
+                        {activity.title}
+                      </strong>
+
+                      <span>
+                        {activity.category}
+                        {" · "}
+                        {activity.date}
+                      </span>
+
+                    </div>
+
+
+                    <div className="activity-points">
+
+                      <strong>
+                        +{activity.pointsApproved || 0}
+                      </strong>
+
+                      <span>
+                        {activity.status}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                )
+              )
+
+            ) : (
+
+              <div className="dashboard-empty">
+
+                <p>
+                  No activities submitted yet.
+                </p>
+
+                <Link to="/add-activity">
+                  Add your first activity
+                </Link>
+
+              </div>
+
+            )}
+
+          </div>
+
+        </section>
+
+
+        {/* CATEGORY OVERVIEW */}
+
+        <section className="category-section">
+
+          <div className="section-title">
+
+            <div>
+
+              <h3>
+                Activity Categories
+              </h3>
+
+              <p>
+                Your approved points by category
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div className="category-grid">
+
+            {Object.keys(categoryPoints).length > 0 ? (
+
+              Object.entries(categoryPoints)
+                .map(
+                  ([category, points]) => (
+
+                    <div
+                      className="category-card"
+                      key={category}
+                    >
+
+                      <span className="category-symbol">
+                        {category.charAt(0)}
+                      </span>
+
+                      <strong>
+                        {category}
+                      </strong>
+
+                      <p>
+                        {points} points
+                      </p>
+
+                    </div>
+
+                  )
+                )
+
+            ) : (
+
+              <p className="no-category-data">
+                No approved activity points yet.
+              </p>
+
+            )}
+
+          </div>
+
+        </section>
 
       </main>
 

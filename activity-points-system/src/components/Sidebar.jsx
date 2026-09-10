@@ -9,6 +9,11 @@ import {
 } from "lucide-react";
 
 function Sidebar() {
+
+  const student = JSON.parse(
+    localStorage.getItem("student")
+  );
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -85,16 +90,33 @@ function Sidebar() {
       <div className="sidebar-bottom">
 
         <div className="student-mini">
-          <div className="avatar">AT</div>
+
+          <div className="avatar">
+            {student?.name
+              ?.split(" ")
+              .map((word) => word[0])
+              .join("")
+              .slice(0, 2)
+              .toUpperCase()}
+          </div>
 
           <div>
-            <strong>Ananya Thomas</strong>
-            <span>RSET001</span>
+            <strong>
+              {student?.name || "Student"}
+            </strong>
+
+            <span>
+              {student?.uid || ""}
+            </span>
           </div>
+
         </div>
 
-        <button className="logout-button" onClick={handleLogout}>
-          <LogOut size={17} />
+        <button
+          className="logout-button"
+          onClick={handleLogout}
+        >
+          <LogOut size={14} />
           Logout
         </button>
 
