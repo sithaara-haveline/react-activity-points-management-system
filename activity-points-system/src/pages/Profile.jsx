@@ -58,10 +58,10 @@ function Profile() {
 
             <h2>{student.name}</h2>
 
-            <p>{student.uid}</p>
+            <p><b>UID: </b>{student.uid}</p>
 
             <p>
-              {student.department}
+              <b>Department: </b>{student.department}
             </p>
 
           </div>
@@ -71,17 +71,17 @@ function Profile() {
         <div className="profile-details">
 
           <div>
-            <strong>Semester</strong>
+            <strong>Semester: </strong>
             <span>{student.semester}</span>
           </div>
 
           <div>
-            <strong>Email</strong>
+            <strong>Email:  </strong>
             <span>{student.email}</span>
           </div>
 
           <div>
-            <strong>Phone</strong>
+            <strong>Phone:  </strong>
             <span>{student.phone}</span>
           </div>
 
