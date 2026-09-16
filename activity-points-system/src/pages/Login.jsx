@@ -14,7 +14,9 @@ function Login() {
     e.preventDefault();
     setError("");
 
-    const response = await fetch("/data/students.json");
+    const response = await fetch(
+  `${import.meta.env.BASE_URL}data/students.json`
+);
     const students = await response.json();
 
     const student = students.find(
@@ -83,7 +85,7 @@ function Login() {
         </form>
 
         <small>
-          Demo: RSET001 / student123
+          Demo: abc / 123
         </small>
 
       </div>
